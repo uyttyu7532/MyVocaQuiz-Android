@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 // RecyclerView에 표시될 View 생성
-class QuizAdapter(val data:ArrayList<Data>, val correct:Data): RecyclerView.Adapter<QuizAdapter.MyViewHolder>() {
+class QuizAdapter(val data:ArrayList<Data>, val correct:Data, val choice_count:Int, val choice_quiz:Int): RecyclerView.Adapter<QuizAdapter.MyViewHolder>() {
 
     interface onItemClickListener{
        fun onItemClick( holder:MyViewHolder, view: View, data:String, position: Int)
@@ -23,12 +23,15 @@ class QuizAdapter(val data:ArrayList<Data>, val correct:Data): RecyclerView.Adap
     }
     // 아이템의 데이터 갯수
     override fun getItemCount(): Int {
-        return 4
+        return choice_count
     }
 
     // 뷰홀더에 해당하는 것이 전달됨.(내용만 교체할때 호출됨)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.textView.text=data[position].meaning
+        if(choice_quiz == 0)
+            holder.textView.text=data[position].meaning
+        else
+            holder.textView.text=data[position].word
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

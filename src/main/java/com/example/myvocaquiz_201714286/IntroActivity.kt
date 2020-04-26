@@ -20,12 +20,12 @@ class IntroActivity : AppCompatActivity() {
         PrintStream(openFileOutput("out.txt", Context.MODE_APPEND))
 
         vocaBtn.setOnClickListener {
-            val i = Intent(this, VocaActivity::class.java)
+            val i = Intent(this, VocListActivity::class.java)
             startActivity(i)
         }
 
         quizBtn.setOnClickListener {
-            val i = Intent(this, QuizActivity::class.java)
+            val i = Intent(this, OptionActivity::class.java)
             startActivity(i)
         }
 

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myvocaquiz_201714286.R
 
 // RecyclerView에 표시될 View 생성
-class VocaAdapter(val items: ArrayList<String>, val words:Map<String, String>): RecyclerView.Adapter<VocaAdapter.MyViewHolder>() {
+class VocListAdapter(val items: ArrayList<String>, val words:Map<String, String>): RecyclerView.Adapter<VocListAdapter.MyViewHolder>() {
 
     interface onItemClickListener{
        fun onItemClick( holder:MyViewHolder, view: View, data:String, position: Int)

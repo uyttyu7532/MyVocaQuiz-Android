@@ -22,6 +22,7 @@ class QuizActivity : AppCompatActivity() {
     var totalquiz = 0
     lateinit var tts:TextToSpeech
     var isTtsReady = false
+    var choice_quiz = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,25 +45,27 @@ class QuizActivity : AppCompatActivity() {
 
     private fun init(pos:Int) {
 
+        var choice_count = intent.getIntExtra("choice_count", 1)
+        var choice_quiz = intent.getIntExtra("choice_quiz", 0)
+
         tts = TextToSpeech(this, TextToSpeech.OnInitListener {
             isTtsReady = true
             tts.language = Locale.US
         })
 
-        quizText.text = words[pos].word
-        var tmpList= ArrayList<Data>()
-        tmpList.add(words[pos])
-        while(tmpList.size < 4){
-            var tmpNum = Random().nextInt(words.size)
-            if(!tmpList.contains(words[tmpNum])) {
-                tmpList.add(words[tmpNum])
-            }
-        }
-        tmpList.shuffle()
 
-        adapter = QuizAdapter(tmpList,words[pos])
+        if(choice_quiz == 1)
+            quiz_english(pos, choice_count,choice_quiz)
+        else
+            quiz_korean(pos, choice_count,choice_quiz)
+
+
+
+
+
         RecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         RecyclerView.adapter = adapter
+
 
         val animation = AnimationUtils.loadAnimation(this, R.anim.animation)
 
@@ -78,8 +81,14 @@ class QuizActivity : AppCompatActivity() {
                 }
                 totalquiz++
                 scoreText.text="정답 수 / 푼 문제 수\n $score / $totalquiz"
+
                 Handler().postDelayed({
-                    init(pos+1)
+                    if(pos<words.size-1) {
+                        init(pos + 1)
+                    }
+                    else{
+                        finish()
+                    }
                 }, 500)
 
             }
@@ -96,17 +105,53 @@ class QuizActivity : AppCompatActivity() {
     }
 
 
-    fun readFile(){
-        val scan = Scanner(resources.openRawResource(R.raw.words))
+    fun readFileScan(scan: Scanner){
         while(scan.hasNextLine()){
             val word = scan.nextLine()
             val meaning = scan.nextLine()
 
             var tmp = Data(word,meaning)
             words.add(tmp)
-
         }
+    }
+
+    fun readFile(){
+        val scan = Scanner(resources.openRawResource(R.raw.words))
+        val scan2 = Scanner(openFileInput("out.txt"))
+
+        readFileScan(scan2)
+        readFileScan(scan)
+
 
         words.shuffle()
     }
+
+    fun quiz_english(pos: Int, choice_count:Int, choice_quiz:Int){ // 영어 보기
+        quizText.text = words[pos].meaning
+        var tmpList= ArrayList<Data>()
+        tmpList.add(words[pos])
+        while(tmpList.size < choice_count){
+            var tmpNum = Random().nextInt(words.size)
+            if(!tmpList.contains(words[tmpNum])) {
+                tmpList.add(words[tmpNum])
+            }
+        }
+        tmpList.shuffle()
+        adapter = QuizAdapter(tmpList,words[pos],choice_count,choice_quiz)
+    }
+
+    fun quiz_korean(pos: Int, choice_count:Int, choice_quiz:Int){ // 한글 보기
+        quizText.text = words[pos].word
+        var tmpList= ArrayList<Data>()
+        tmpList.add(words[pos])
+        while(tmpList.size < choice_count){
+            var tmpNum = Random().nextInt(words.size)
+            if(!tmpList.contains(words[tmpNum])) {
+                tmpList.add(words[tmpNum])
+            }
+        }
+        tmpList.shuffle()
+        adapter = QuizAdapter(tmpList,words[pos],choice_count,choice_quiz)
+    }
+
 }

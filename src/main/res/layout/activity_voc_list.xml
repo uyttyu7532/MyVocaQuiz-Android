@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".VocaActivity">
+    tools:context=".VocListActivity">
     <TextView
         android:text="영어단어장"
         android:layout_width="match_parent"
@@ -17,8 +17,12 @@
         android:gravity="center"
         android:padding="25dp"
         android:background="#D5DFE4"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerView"/>
+        android:id="@+id/recyclerView">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 </LinearLayout>

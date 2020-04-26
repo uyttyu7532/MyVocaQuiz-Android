@@ -1,6 +1,6 @@
 package com.example.myvocaquiz_201714286
 
-import VocaAdapter
+import VocListAdapter
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
@@ -13,22 +13,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_voca.*
+import kotlinx.android.synthetic.main.activity_voc_list.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class VocaActivity : AppCompatActivity() {
+class VocListActivity : AppCompatActivity() {
 
 
     var words = mutableMapOf<String, String>()
     var array = ArrayList<String>()
-    lateinit var adapter: VocaAdapter
+    lateinit var adapter: VocListAdapter
     lateinit var tts:TextToSpeech
     var isTtsReady = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_voca)
+        setContentView(R.layout.activity_voc_list)
         init()
     }
 
@@ -50,9 +50,9 @@ class VocaActivity : AppCompatActivity() {
         })
         readFile()
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
-        adapter = VocaAdapter(array,words)
-        adapter.itemClickListener = object:VocaAdapter.onItemClickListener{
-            override fun onItemClick(holder: VocaAdapter.MyViewHolder, view: View, data: String, position: Int) {
+        adapter = VocListAdapter(array,words)
+        adapter.itemClickListener = object:VocListAdapter.onItemClickListener{
+            override fun onItemClick(holder: VocListAdapter.MyViewHolder, view: View, data: String, position: Int) {
                 if(isTtsReady){
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         tts.speak(data, TextToSpeech.QUEUE_ADD, null,null)
