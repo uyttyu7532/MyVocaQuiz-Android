@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_quiz.*
+import kotlinx.android.synthetic.main.activity_voc_list.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -63,8 +64,8 @@ class QuizActivity : AppCompatActivity() {
 
 
 
-        RecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
-        RecyclerView.adapter = adapter
+        recyclerView.layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        recyclerView.adapter = adapter
 
 
         val animation = AnimationUtils.loadAnimation(this, R.anim.animation)

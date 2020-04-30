@@ -8,7 +8,6 @@ import android.speech.tts.TextToSpeech
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,7 +45,7 @@ class VocListActivity : AppCompatActivity() {
     private fun init() {
         tts = TextToSpeech(this, TextToSpeech.OnInitListener {
             isTtsReady = true
-            tts.language = Locale.KOREA
+            tts.language = Locale.US
         })
         readFile()
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
@@ -58,14 +57,11 @@ class VocListActivity : AppCompatActivity() {
                         tts.speak(data, TextToSpeech.QUEUE_ADD, null,null)
                     }
                 }
-
-
                 if(holder.meaningView.visibility==GONE){
                     holder.meaningView.visibility = VISIBLE
                 }else{
                     holder.meaningView.visibility = GONE
                 }
-                Toast.makeText(applicationContext,words[data],Toast.LENGTH_SHORT).show()
             }
 
         }
