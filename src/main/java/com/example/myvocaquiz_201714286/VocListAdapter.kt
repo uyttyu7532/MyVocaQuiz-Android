@@ -1,4 +1,5 @@
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +28,22 @@ class VocListAdapter(val items: ArrayList<String>, val words:Map<String, String>
     }
 
     // 뷰홀더에 해당하는 것이 전달됨.(내용만 교체할때 호출됨)
+    @SuppressLint("WrongConstant")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.textView.text=items[position]
         holder.meaningView.text=words.getValue(items[position])
+
+//        if(switchOn) {
+//            holder.meaningView.visibility = VISIBLE
+//        }
+//        else{
+//            holder.meaningView.visibility = GONE
+//        }
+
+
     }
+
+
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var textView:TextView = itemView.findViewById(R.id.textView)

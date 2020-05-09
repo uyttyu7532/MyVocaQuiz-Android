@@ -29,10 +29,6 @@ class IntroActivity : AppCompatActivity() {
             startActivity(i)
         }
 
-        addBtn.setOnClickListener {
-            val i = Intent(this, AddVocActivity::class.java)
-            startActivity(i)
-        }
 
     }
 }

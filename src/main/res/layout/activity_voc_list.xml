@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".VocListActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <TextView
         android:text="영어단어장"
         android:layout_width="match_parent"
@@ -18,11 +24,31 @@
         android:padding="25dp"
         android:background="#D5DFE4"/>
 
+<!--    <Switch-->
+<!--        android:id="@+id/meaningSwitch"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:textOff="전체 단어 뜻 보여주기"-->
+<!--        android:textOn="전체 단어 뜻 숨기기" />-->
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerView">
+        android:layout_below="@+id/title">
 
     </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
 
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:clickable="true"
+        android:tint="#ffffff"
+        app:srcCompat="@drawable/plus" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

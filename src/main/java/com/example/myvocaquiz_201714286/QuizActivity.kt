@@ -9,7 +9,6 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_quiz.*
-import kotlinx.android.synthetic.main.activity_voc_list.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -23,7 +22,6 @@ class QuizActivity : AppCompatActivity() {
     var totalquiz = 0
     lateinit var tts:TextToSpeech
     var isTtsReady = false
-    var choice_quiz = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,8 +62,8 @@ class QuizActivity : AppCompatActivity() {
 
 
 
-        recyclerView.layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
-        recyclerView.adapter = adapter
+        RecyclerView.layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        RecyclerView.adapter = adapter
 
 
         val animation = AnimationUtils.loadAnimation(this, R.anim.animation)
@@ -117,7 +115,7 @@ class QuizActivity : AppCompatActivity() {
     }
 
     fun readFile(){
-        val scan = Scanner(resources.openRawResource(R.raw.words))
+        val scan = Scanner(resources.openRawResource(R.raw.words2))
         val scan2 = Scanner(openFileInput("out.txt"))
 
         readFileScan(scan2)
