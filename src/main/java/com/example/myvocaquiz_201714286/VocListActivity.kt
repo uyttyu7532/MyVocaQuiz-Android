@@ -147,7 +147,7 @@ class VocListActivity : AppCompatActivity() {
             .setView(mDialogView)
             .setTitle("단어 추가하기")
         builder.setPositiveButton("추가") { _, _ ->
-            //            writeFile()
+//                        writeFile()
 
         }
         builder.setNegativeButton("취소") { _, _ ->

@@ -9,6 +9,8 @@ import java.io.PrintStream
 
 class IntroActivity : AppCompatActivity() {
 
+    val textArray = arrayListOf<String>("단어리스트","퀴즈")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
@@ -28,6 +30,7 @@ class IntroActivity : AppCompatActivity() {
             val i = Intent(this, OptionActivity::class.java)
             startActivity(i)
         }
+
 
 
     }
