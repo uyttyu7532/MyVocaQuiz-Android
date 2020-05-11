@@ -127,12 +127,12 @@ class QuizActivity : AppCompatActivity() {
 
     fun quiz_english(pos: Int, choice_count:Int, choice_quiz:Int){ // 영어 보기
         quizText.text = words[pos].meaning
-        var tmpList= ArrayList<Data>()
-        tmpList.add(words[pos])
+        var tmpList= ArrayList<String>()
+        tmpList.add(words[pos].word)
         while(tmpList.size < choice_count){
             var tmpNum = Random().nextInt(words.size)
-            if(!tmpList.contains(words[tmpNum])) {
-                tmpList.add(words[tmpNum])
+            if(!tmpList.contains(words[tmpNum].word)) {
+                tmpList.add(words[tmpNum].word)
             }
         }
         tmpList.shuffle()
@@ -141,12 +141,14 @@ class QuizActivity : AppCompatActivity() {
 
     fun quiz_korean(pos: Int, choice_count:Int, choice_quiz:Int){ // 한글 보기
         quizText.text = words[pos].word
-        var tmpList= ArrayList<Data>()
-        tmpList.add(words[pos])
+
+        var tmpList= ArrayList<String>()
+        tmpList.add(words[pos].meaning)
         while(tmpList.size < choice_count){
             var tmpNum = Random().nextInt(words.size)
-            if(!tmpList.contains(words[tmpNum])) {
-                tmpList.add(words[tmpNum])
+
+            if(!tmpList.contains(words[tmpNum].meaning)) {
+                tmpList.add(words[tmpNum].meaning)
             }
         }
         tmpList.shuffle()

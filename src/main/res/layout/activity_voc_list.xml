@@ -24,13 +24,13 @@
         android:padding="25dp"
         android:background="#D5DFE4"/>
 
-<!--    <Switch-->
-<!--        android:id="@+id/meaningSwitch"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:textOff="전체 단어 뜻 보여주기"-->
-<!--        android:textOn="전체 단어 뜻 숨기기" />-->
+    <Switch
+        android:id="@+id/meaningSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textOff="전체 단어 뜻 보여주기"
+        android:textOn="전체 단어 뜻 숨기기" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

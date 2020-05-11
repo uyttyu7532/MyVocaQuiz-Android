@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 // RecyclerView에 표시될 View 생성
-class QuizAdapter(val data:ArrayList<Data>, val correct:Data, val choice_count:Int, val choice_quiz:Int): RecyclerView.Adapter<QuizAdapter.MyViewHolder>() {
+class QuizAdapter(val choice_data:ArrayList<String>, val correct:Data, val choice_count:Int, val choice_quiz:Int): RecyclerView.Adapter<QuizAdapter.MyViewHolder>() {
 
     interface onItemClickListener{
        fun onItemClick( holder:MyViewHolder, view: View, data:String, position: Int)
@@ -28,17 +28,14 @@ class QuizAdapter(val data:ArrayList<Data>, val correct:Data, val choice_count:I
 
     // 뷰홀더에 해당하는 것이 전달됨.(내용만 교체할때 호출됨)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        if(choice_quiz == 0)
-            holder.textView.text=data[position].meaning
-        else
-            holder.textView.text=data[position].word
+            holder.textView.text=choice_data[position]
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var textView:TextView = itemView.findViewById(R.id.textView)
         init{
             itemView.setOnClickListener {
-                if(data[adapterPosition].word == correct.word){
+                if(choice_data[adapterPosition] == correct.meaning){
                     itemClickListener?.onItemClick(this, it, "true", adapterPosition)
                 }
                 else{

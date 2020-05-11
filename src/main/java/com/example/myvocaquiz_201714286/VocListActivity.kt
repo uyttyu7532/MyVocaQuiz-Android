@@ -30,7 +30,7 @@ class VocListActivity : AppCompatActivity() {
     var words = mutableMapOf<String, String>()
     var array = ArrayList<String>()
     lateinit var adapter: VocListAdapter
-    lateinit var tts:TextToSpeech
+    lateinit var tts: TextToSpeech
     var isTtsReady = false
     var switchOn = false
 
@@ -50,6 +50,31 @@ class VocListActivity : AppCompatActivity() {
         tts.shutdown()
     }
 
+    private fun makeList() {
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        adapter = VocListAdapter(array, words, switchOn)
+        adapter.itemClickListener = object : VocListAdapter.onItemClickListener {
+            override fun onItemClick(
+                holder: MyViewHolder,
+                view: View,
+                data: String,
+                position: Int
+            ) {
+                if (isTtsReady) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        tts.speak(data, TextToSpeech.QUEUE_ADD, null, null)
+                    }
+                }
+                if (holder.meaningView.visibility == GONE) {
+                    holder.meaningView.visibility = VISIBLE
+                } else {
+                    holder.meaningView.visibility = GONE
+                }
+            }
+        }
+        recyclerView.adapter = adapter
+    }
+
     @SuppressLint("WrongConstant")
     private fun init() {
         tts = TextToSpeech(this, TextToSpeech.OnInitListener {
@@ -57,36 +82,31 @@ class VocListActivity : AppCompatActivity() {
             tts.language = Locale.US
         })
         readFile()
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
-        adapter = VocListAdapter(array, words)
-        adapter.itemClickListener = object:VocListAdapter.onItemClickListener{
-            override fun onItemClick(holder: MyViewHolder, view: View, data: String, position: Int) {
-                if(isTtsReady){
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        tts.speak(data, TextToSpeech.QUEUE_ADD, null,null)
-                    }
-                }
-                if(holder.meaningView.visibility==GONE){
-                    holder.meaningView.visibility = VISIBLE
-                }else{
-                    holder.meaningView.visibility = GONE
-                }
+        makeList()
+
+        meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                switchOn = true
+                makeList()
+            } else {
+                switchOn = false
+                makeList()
             }
-
         }
-
-
 
         addFab.setOnClickListener {
             addDialog()
         }
 
-        recyclerView.adapter = adapter
-        val simpleCallback = object:ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN or ItemTouchHelper.UP, ItemTouchHelper.RIGHT){
+
+        val simpleCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.DOWN or ItemTouchHelper.UP,
+            ItemTouchHelper.RIGHT
+        ) {
             override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: ViewHolder,
-                    target: ViewHolder
+                recyclerView: RecyclerView,
+                viewHolder: ViewHolder,
+                target: ViewHolder
             ): Boolean {
                 adapter.moveItem(viewHolder.adapterPosition, target.adapterPosition)
                 return true
@@ -102,22 +122,10 @@ class VocListActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
 
-//        // 전체 보이기/ 숨기기 하고싶음
-//        meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-//            if (isChecked) {
-//                switchOn = true
-//                Toast.makeText(this,"on", Toast.LENGTH_SHORT).show()
-//            } else {
-//                switchOn = false
-//                Toast.makeText(this,"off", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-
-
     }
 
-    fun readFileScan(scan: Scanner){
-        while(scan.hasNextLine()){
+    fun readFileScan(scan: Scanner) {
+        while (scan.hasNextLine()) {
             val word = scan.nextLine()
             val meaning = scan.nextLine()
             words[word] = meaning
@@ -126,25 +134,23 @@ class VocListActivity : AppCompatActivity() {
         scan.close()
     }
 
-    fun readFile(){
+    fun readFile() {
         val scan2 = Scanner(openFileInput("out.txt"))
         readFileScan(scan2)
         val scan = Scanner(resources.openRawResource(R.raw.words2))
         readFileScan(scan)
     }
 
-    fun addDialog(){
+    fun addDialog() {
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.activity_add_voc, null)
         val builder = AlertDialog.Builder(this)
             .setView(mDialogView)
             .setTitle("단어 추가하기")
-        builder.setPositiveButton("추가"){
-                _,_->
-//            writeFile()
+        builder.setPositiveButton("추가") { _, _ ->
+            //            writeFile()
 
         }
-        builder.setNegativeButton("취소"){
-                _,_->
+        builder.setNegativeButton("취소") { _, _ ->
         }
 //            mDialogView.AddBtn.setOnClickListener {
 //                mAlertDialog.dismiss()
