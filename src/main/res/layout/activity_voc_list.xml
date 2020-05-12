@@ -19,24 +19,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/title"
         android:textStyle="bold"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:gravity="center"
         android:padding="25dp"
         android:background="#D5DFE4"/>
 
-    <Switch
-        android:id="@+id/meaningSwitch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textOff="전체 단어 뜻 보여주기"
-        android:textOn="전체 단어 뜻 숨기기" />
+        <Switch
+            android:id="@+id/meaningSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_alignParentRight="true" />
 
-    <androidx.recyclerview.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title">
+        android:layout_below="@+id/meaningSwitch">
 
     </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>

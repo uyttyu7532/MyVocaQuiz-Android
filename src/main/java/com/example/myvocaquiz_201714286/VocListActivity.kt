@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -142,16 +143,17 @@ class VocListActivity : AppCompatActivity() {
     }
 
     fun addDialog() {
-        val mDialogView = LayoutInflater.from(this).inflate(R.layout.activity_add_voc, null)
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.fragment_add, null)
         val builder = AlertDialog.Builder(this)
             .setView(mDialogView)
             .setTitle("단어 추가하기")
         builder.setPositiveButton("추가") { _, _ ->
-//                        writeFile()
-
+            var newWord = mDialogView.findViewById<EditText>(R.id.editWord).text.toString()
+            var newMeaning = mDialogView.findViewById<EditText>(R.id.editMeaning).text.toString()
+            writeFile(newWord, newMeaning)
         }
-        builder.setNegativeButton("취소") { _, _ ->
-        }
+//        builder.setNegativeButton("취소") { _,_->
+//        }
 //            mDialogView.AddBtn.setOnClickListener {
 //                mAlertDialog.dismiss()
 //            }
@@ -160,6 +162,7 @@ class VocListActivity : AppCompatActivity() {
 //            }
         val dig = builder.create()
         dig.show()
+
     }
 
     private fun writeFile(word: String, meaning: String) {
