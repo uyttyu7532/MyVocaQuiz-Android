@@ -1,4 +1,4 @@
-import android.annotation.SuppressLint
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -31,11 +31,10 @@ class VocListAdapter(
 
     // 아이템의 데이터 갯수
     override fun getItemCount(): Int {
-        return items.size
+        return words.size
     }
 
     // 뷰홀더에 해당하는 것이 전달됨.(내용만 교체할때 호출됨)
-    @SuppressLint("WrongConstant")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.textView.text = items[position]
         holder.meaningView.text = words.getValue(items[position])
@@ -47,9 +46,9 @@ class VocListAdapter(
         var textView: TextView = itemView.findViewById(R.id.textView)
         var meaningView: TextView = itemView.findViewById(R.id.meaningView)
 
-//        var meaningSwitch
 
         init {
+            // 전체보이기/숨기기
             if (switchOn) {
                 meaningView.visibility = VISIBLE
             } else {
@@ -60,18 +59,6 @@ class VocListAdapter(
                 itemClickListener?.onItemClick(this, it, items[adapterPosition], adapterPosition)
             }
 
-//            // 전체 보이기/ 숨기기 하고싶음
-//            meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-//                if (isChecked) {
-//                    switchOn = true
-//                    meaningView.visibility= VISIBLE
-////                    Toast.makeText(this,"on", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    switchOn = false
-//                    meaningView.visibility= GONE
-////                    Toast.makeText(this,"off", Toast.LENGTH_SHORT).show()
-//                }
-//            }
         }
     }
 
@@ -86,6 +73,13 @@ class VocListAdapter(
     fun removeItem(pos: Int) {
         items.removeAt(pos)
         notifyItemRemoved(pos)
+
+
+
+        // 줄바꿈공백없애기
+        // value = value.replaceAll(System.getProperty("line.separator"), " ");
+
+        /* remove당한 위치의 단어를 알아낸다! 그 단어를 파일에서 찾아서 지우고 arraylist에 단어를 다시 저장한다! */
     }
 
 

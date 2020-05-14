@@ -136,7 +136,7 @@ class QuizActivity : AppCompatActivity() {
             }
         }
         tmpList.shuffle()
-        adapter = QuizAdapter(tmpList,words[pos],choice_count,choice_quiz)
+        adapter = QuizAdapter(tmpList,words[pos],choice_count)
     }
 
     fun quiz_korean(pos: Int, choice_count:Int, choice_quiz:Int){ // 한글 보기
@@ -152,7 +152,7 @@ class QuizActivity : AppCompatActivity() {
             }
         }
         tmpList.shuffle()
-        adapter = QuizAdapter(tmpList,words[pos],choice_count,choice_quiz)
+        adapter = QuizAdapter(tmpList,words[pos],choice_count)
     }
 
 }
