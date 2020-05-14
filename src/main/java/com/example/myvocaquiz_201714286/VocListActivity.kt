@@ -3,9 +3,7 @@ package com.example.myvocaquiz_201714286
 import VocListAdapter
 import VocListAdapter.MyViewHolder
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -139,6 +137,8 @@ class VocListActivity : AppCompatActivity() {
             sortByABC.setTextColor(Color.GRAY)
             makeList(array)
         }
+
+
     }
 
     fun readFileScan(scan: Scanner) {
@@ -228,9 +228,10 @@ class VocListActivity : AppCompatActivity() {
         output.println(word)
         output.println(meaning)
         output.close()
-        val i = Intent()
-        i.putExtra("voc", Data(word, meaning))
-        setResult(Activity.RESULT_OK, i)
+//        val i = Intent()
+//        i.putExtra("voc", Data(word, meaning))
+//        setResult(Activity.RESULT_OK, i)
+
     }
 
     fun sortArray() {
@@ -238,6 +239,9 @@ class VocListActivity : AppCompatActivity() {
         Collections.sort(sortedArray)
         makeList(sortedArray)
     }
+
+
+
 
 
 }

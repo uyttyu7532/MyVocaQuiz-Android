@@ -115,7 +115,7 @@ class QuizActivity : AppCompatActivity() {
     }
 
     fun readFile(){
-        val scan = Scanner(resources.openRawResource(R.raw.words2))
+        val scan = Scanner(resources.openRawResource(R.raw.words))
         val scan2 = Scanner(openFileInput("out.txt"))
 
         readFileScan(scan2)
