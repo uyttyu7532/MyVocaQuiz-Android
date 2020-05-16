@@ -1,4 +1,3 @@
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -11,7 +10,7 @@ import com.example.myvocaquiz_201714286.R
 // RecyclerView에 표시될 View 생성
 class VocListAdapter(
     val items: ArrayList<String>,
-    val words: Map<String, String>,
+    val words: MutableMap<String, String>,
     var switchOn: Boolean
 ) : RecyclerView.Adapter<VocListAdapter.MyViewHolder>() {
 
@@ -31,7 +30,7 @@ class VocListAdapter(
 
     // 아이템의 데이터 갯수
     override fun getItemCount(): Int {
-        return words.size
+        return items.size
     }
 
     // 뷰홀더에 해당하는 것이 전달됨.(내용만 교체할때 호출됨)
@@ -62,7 +61,6 @@ class VocListAdapter(
         }
     }
 
-
     fun moveItem(oldPos: Int, newPos: Int) {
         val item = items.get(oldPos)
         items.removeAt(oldPos)
@@ -70,17 +68,8 @@ class VocListAdapter(
         notifyItemMoved(oldPos, newPos)
     }
 
-    fun removeItem(pos: Int) {
-        items.removeAt(pos)
+    fun removeItem(pos: Int) : String{
         notifyItemRemoved(pos)
-
-
-
-        // 줄바꿈공백없애기
-        // value = value.replaceAll(System.getProperty("line.separator"), " ");
-
-        /* remove당한 위치의 단어를 알아낸다! 그 단어를 파일에서 찾아서 지우고 arraylist에 단어를 다시 저장한다! */
+        return items.removeAt(pos)
     }
-
-
 }

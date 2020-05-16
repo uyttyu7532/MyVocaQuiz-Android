@@ -3,10 +3,11 @@ package com.example.myvocaquiz_201714286
 import VocListAdapter
 import VocListAdapter.MyViewHolder
 import android.annotation.SuppressLint
-import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
@@ -18,16 +19,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pd.chocobar.ChocoBar
 import kotlinx.android.synthetic.main.activity_voc_list.*
-import java.io.PrintStream
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class VocListActivity : AppCompatActivity() {
-
 
     var words = mutableMapOf<String, String>()
     var array = ArrayList<String>()
@@ -51,6 +49,75 @@ class VocListActivity : AppCompatActivity() {
         super.onDestroy()
         tts.shutdown()
     }
+
+
+    @SuppressLint("WrongConstant")
+    private fun init() {
+
+        tts = TextToSpeech(this, TextToSpeech.OnInitListener {
+            isTtsReady = true
+            tts.language = Locale.US
+        })
+
+        loadAllData()
+        makeList(array)
+
+
+        // 전체보이기/숨기기
+        meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                switchOn = true
+                makeList(array)
+            } else {
+                switchOn = false
+                makeList(array)
+            }
+        }
+
+        addFab.setOnClickListener {
+            addDialog()
+        }
+
+
+        val simpleCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.DOWN or ItemTouchHelper.UP,
+            ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                adapter.moveItem(viewHolder.adapterPosition, target.adapterPosition)
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+               val delWord= adapter.removeItem(viewHolder.adapterPosition)
+                delData(delWord)
+            }
+
+        }
+
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
+
+        sortByABC.setOnClickListener {
+            sortByABC.setTextColor(Color.BLACK)
+            sortByRecent.setTextColor(Color.GRAY)
+            sortArray()
+        }
+        sortByRecent.setOnClickListener {
+            sortByRecent.setTextColor(Color.BLACK)
+            sortByABC.setTextColor(Color.GRAY)
+            makeList(array)
+        }
+
+
+    }
+
 
     private fun makeList(array: ArrayList<String>) {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -77,92 +144,40 @@ class VocListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    @SuppressLint("WrongConstant")
-    private fun init() {
-        tts = TextToSpeech(this, TextToSpeech.OnInitListener {
-            isTtsReady = true
-            tts.language = Locale.US
-        })
-        readFile()
-        makeList(array)
+    private fun saveData(word: String, meaning: String) {
+        val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = pref.edit()
+        editor.putString(word, meaning)
+            .apply()
 
-        // 전체보이기/숨기기
-        meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                switchOn = true
-                makeList(array)
-            } else {
-                switchOn = false
-                makeList(array)
-            }
+        words[word] = meaning
+        array.add(word)
+    }
+
+
+    private fun loadAllData() {
+        val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val prefKeys:MutableSet<String> = pref.all.keys
+        for (pref_key in prefKeys) {
+            words[pref_key] = pref.getString(pref_key, "null")
+            array.add(pref_key)
         }
+    }
 
-        addFab.setOnClickListener {
-            addDialog()
-        }
+    private fun delData(word: String) {
 
+        val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = pref.edit()
+        editor.remove(word).commit()
 
-        val simpleCallback = object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.DOWN or ItemTouchHelper.UP,
-            ItemTouchHelper.RIGHT
-        ) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: ViewHolder,
-                target: ViewHolder
-            ): Boolean {
-                adapter.moveItem(viewHolder.adapterPosition, target.adapterPosition)
-                return true
-            }
-
-            override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-                adapter.removeItem(viewHolder.adapterPosition)
-
-
-            }
-
-        }
-
-        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
-
-
-        sortByABC.setOnClickListener {
-            sortByABC.setTextColor(Color.BLACK)
-            sortByRecent.setTextColor(Color.GRAY)
-            sortArray()
-        }
-        sortByRecent.setOnClickListener {
-            sortByRecent.setTextColor(Color.BLACK)
-            sortByABC.setTextColor(Color.GRAY)
-            makeList(array)
-        }
-
+        words.remove(word)
+        array.remove(word)
+        //https://www.it-swarm.dev/ko/java/%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C-%EC%A4%84%EC%9D%84-%EC%B0%BE%EC%95%84%EC%84%9C-%EC%A0%9C%EA%B1%B0%ED%95%98%EC%8B%AD%EC%8B%9C%EC%98%A4/967010671/
+        //https://stackoverrun.com/ko/q/11565281
+        //https://mantdu.tistory.com/731
 
     }
 
-    fun readFileScan(scan: Scanner) {
-        while (scan.hasNextLine()) {
-            val word = scan.nextLine()
-            val meaning = scan.nextLine()
-
-            if (words.containsKey(word)) {
-//                Toast.makeText(this, word + "는 이미 추가된 단어입니다.",Toast.LENGTH_SHORT).show()
-//                ShowChocoBarRed(word + "는 이미 추가된 단어입니다.")
-            } else {
-                words[word] = meaning
-                array.add(word)
-            }
-        }
-        scan.close()
-    }
-
-    fun readFile() {
-        val scan2 = Scanner(openFileInput("out.txt"))
-        readFileScan(scan2)
-        val scan = Scanner(resources.openRawResource(R.raw.words))
-        readFileScan(scan)
-    }
 
     fun addDialog() {
 
@@ -185,16 +200,14 @@ class VocListActivity : AppCompatActivity() {
                 var newWord = editWord.text.toString()
                 var newMeaning = editMeaning.text.toString()
 
-
                 if (words.containsKey(newWord)) {
-                    words.remove(newWord)
-                    writeFile(newWord, newMeaning)
+                    delData(newWord)
+                    saveData(newWord, newMeaning)
                     ShowChocoBarOrange("\"" + newWord + "\" 단어가 수정되었습니다.")
                 } else {
-                    writeFile(newWord, newMeaning)
+                    saveData(newWord, newMeaning)
                     ShowChocoBarGreen("\"" + newWord + "\" 단어가 추가되었습니다.")
                 }
-                readFile()
                 makeList(array)
             }
         builder.setNegativeButton("취소") { _, _ ->
@@ -223,25 +236,11 @@ class VocListActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun writeFile(word: String, meaning: String) {
-        val output = PrintStream(openFileOutput("out.txt", Context.MODE_APPEND))
-        output.println(word)
-        output.println(meaning)
-        output.close()
-//        val i = Intent()
-//        i.putExtra("voc", Data(word, meaning))
-//        setResult(Activity.RESULT_OK, i)
-
-    }
 
     fun sortArray() {
         var sortedArray: ArrayList<String> = ArrayList(array)
         Collections.sort(sortedArray)
         makeList(sortedArray)
     }
-
-
-
-
 
 }
