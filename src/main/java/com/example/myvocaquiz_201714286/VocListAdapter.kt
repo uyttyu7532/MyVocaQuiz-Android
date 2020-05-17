@@ -61,12 +61,12 @@ class VocListAdapter(
         }
     }
 
-    fun moveItem(oldPos: Int, newPos: Int) {
-        val item = items.get(oldPos)
-        items.removeAt(oldPos)
-        items.add(newPos, item)
-        notifyItemMoved(oldPos, newPos)
-    }
+//    fun moveItem(oldPos: Int, newPos: Int) {
+//        val item = items.get(oldPos)
+//        items.removeAt(oldPos)
+//        items.add(newPos, item)
+//        notifyItemMoved(oldPos, newPos)
+//    }
 
     fun removeItem(pos: Int) : String{
         notifyItemRemoved(pos)

@@ -29,6 +29,7 @@ class QuizActivity : AppCompatActivity() {
         setContentView(R.layout.activity_quiz)
 
 //        readFile()
+        loadAllData()
         init(0)
     }
 
@@ -44,7 +45,6 @@ class QuizActivity : AppCompatActivity() {
 
     private fun init(pos: Int) {
 
-        loadAllData()
 
         var choice_count = intent.getIntExtra("choice_count", 1)
         var choice_quiz = intent.getIntExtra("choice_quiz", 0)
@@ -56,9 +56,9 @@ class QuizActivity : AppCompatActivity() {
 
 
         if (choice_quiz == 1)
-            quiz_english(pos, choice_count, choice_quiz)
+            quiz_english(pos, choice_count)
         else
-            quiz_korean(pos, choice_count, choice_quiz)
+            quiz_korean(pos, choice_count)
 
 
 
@@ -142,7 +142,7 @@ class QuizActivity : AppCompatActivity() {
     }
 
 
-    fun quiz_english(pos: Int, choice_count: Int, choice_quiz: Int) { // 영어 보기
+    fun quiz_english(pos: Int, choice_count: Int) { // 영어 보기
         quizText.text = words[pos].meaning
         var tmpList = ArrayList<String>()
         tmpList.add(words[pos].word)
@@ -156,7 +156,7 @@ class QuizActivity : AppCompatActivity() {
         adapter = QuizAdapter(tmpList, words[pos], choice_count)
     }
 
-    fun quiz_korean(pos: Int, choice_count: Int, choice_quiz: Int) { // 한글 보기
+    fun quiz_korean(pos: Int, choice_count: Int) { // 한글 보기
         quizText.text = words[pos].word
 
         var tmpList = ArrayList<String>()

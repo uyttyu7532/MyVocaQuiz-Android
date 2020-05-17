@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/FullScreenTheme">
@@ -22,7 +23,7 @@
         <activity android:name=".OptionActivity" />
         <activity android:name=".VocListActivity" />
         <activity android:name=".QuizActivity" />
-        <activity android:name=".IntroActivity"/>
+        <activity android:name=".IntroActivity" />
     </application>
 
 </manifest>

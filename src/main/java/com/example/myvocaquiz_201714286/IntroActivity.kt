@@ -31,6 +31,11 @@ class IntroActivity : AppCompatActivity() {
             startActivity(i)
         }
 
+        button.setOnClickListener {
+            val i = Intent(this, MainActivity::class.java)
+            startActivity(i)
+        }
+
 
 
     }

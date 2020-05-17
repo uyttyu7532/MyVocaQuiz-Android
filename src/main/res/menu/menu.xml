@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/basicWordMenu"
+        android:title="기본 단어장 불러오기" />
+    <item
+        android:id="@+id/delBasicWordMenu"
+        android:title="기본 단어장 삭제하기" />
+</menu>

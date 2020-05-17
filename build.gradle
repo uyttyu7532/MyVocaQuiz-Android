@@ -39,10 +39,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     implementation 'com.airbnb.android:lottie:3.4.0'
 
     implementation 'com.github.Pradyuman7:ChocoBar:V1.2'
+
+
 }

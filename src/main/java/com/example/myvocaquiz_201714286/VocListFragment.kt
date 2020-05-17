@@ -1,23 +1,18 @@
 package com.example.myvocaquiz_201714286
 
 import VocListAdapter
-import VocListAdapter.MyViewHolder
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +22,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class VocListActivity : AppCompatActivity() {
+class VocListFragment : Fragment() {
 
     var words = mutableMapOf<String, String>()
     var array = ArrayList<String>()
@@ -36,13 +31,30 @@ class VocListActivity : AppCompatActivity() {
     var isTtsReady = false
     var switchOn = false
 
-    lateinit var basicPref : SharedPreferences
+    lateinit var basicPref: SharedPreferences
     lateinit var myPref: SharedPreferences
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_voc_list)
+    private var columnCount = 10
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val view = inflater.inflate(R.layout.fragment_voc_list, container, false)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter = VocListAdapter(array, words, switchOn)
+        recyclerView.adapter = adapter
+
         init()
+
+        return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onStop() {
@@ -55,34 +67,34 @@ class VocListActivity : AppCompatActivity() {
         tts.shutdown()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.basicWordMenu -> {
-                readBasicFile()
-            }
-
-            R.id.delBasicWordMenu -> {
-                basicPref.edit().clear().apply()
-                makeList(array)
-            }
-
-
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu, menu)
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.basicWordMenu -> {
+//                readBasicFile()
+//            }
+//
+//            R.id.delBasicWordMenu -> {
+//                basicPref.edit().clear().apply()
+//                makeList(array)
+//            }
+//
+//
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     @SuppressLint("WrongConstant")
     private fun init() {
 
-        basicPref = this.getSharedPreferences("basicPref", Context.MODE_PRIVATE)
-        myPref = this.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        basicPref = context!!.getSharedPreferences("basicPref", Context.MODE_PRIVATE)
+        myPref = context!!.getSharedPreferences("myPref", Context.MODE_PRIVATE)
 
-        tts = TextToSpeech(this, TextToSpeech.OnInitListener {
+        tts = TextToSpeech(context, TextToSpeech.OnInitListener {
             isTtsReady = true
             tts.language = Locale.US
         })
@@ -91,20 +103,16 @@ class VocListActivity : AppCompatActivity() {
         makeList(array)
 
 
-        // 전체보이기/숨기기
-        meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                switchOn = true
-                makeList(array)
-            } else {
-                switchOn = false
-                makeList(array)
-            }
-        }
-
-        addFab.setOnClickListener {
-            addDialog()
-        }
+//        // 전체보이기/숨기기
+//        meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+//            if (isChecked) {
+//                switchOn = true
+//                makeList(array)
+//            } else {
+//                switchOn = false
+//                makeList(array)
+//            }
+//        }
 
 
         val simpleCallback = object : ItemTouchHelper.SimpleCallback(
@@ -132,27 +140,27 @@ class VocListActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
 
-        sortByABC.setOnClickListener {
-            sortByABC.setTextColor(Color.BLACK)
-            sortByRecent.setTextColor(Color.GRAY)
-            sortArray()
-        }
-        sortByRecent.setOnClickListener {
-            sortByRecent.setTextColor(Color.BLACK)
-            sortByABC.setTextColor(Color.GRAY)
-            makeList(array)
-        }
+//        sortByABC.setOnClickListener {
+//            sortByABC.setTextColor(Color.BLACK)
+//            sortByRecent.setTextColor(Color.GRAY)
+//            sortArray()
+//        }
+//        sortByRecent.setOnClickListener {
+//            sortByRecent.setTextColor(Color.BLACK)
+//            sortByABC.setTextColor(Color.GRAY)
+//            makeList(array)
+//        }
 
 
     }
 
 
     private fun makeList(array: ArrayList<String>) {
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        adapter = VocListAdapter(array, words, switchOn)
+//        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        adapter = VocListAdapter(array, words, switchOn)
         adapter.itemClickListener = object : VocListAdapter.onItemClickListener {
             override fun onItemClick(
-                holder: MyViewHolder,
+                holder: VocListAdapter.MyViewHolder,
                 view: View,
                 data: String,
                 position: Int
@@ -162,17 +170,17 @@ class VocListActivity : AppCompatActivity() {
                         tts.speak(data, TextToSpeech.QUEUE_ADD, null, null)
                     }
                 }
-                if (holder.meaningView.visibility == GONE) {
-                    holder.meaningView.visibility = VISIBLE
+                if (holder.meaningView.visibility == View.GONE) {
+                    holder.meaningView.visibility = View.VISIBLE
                 } else {
-                    holder.meaningView.visibility = GONE
+                    holder.meaningView.visibility = View.GONE
                 }
             }
         }
-        recyclerView.adapter = adapter
+//        recyclerView.adapter = adapter
     }
 
-    private fun saveData(pref:SharedPreferences, word: String, meaning: String) {
+    private fun saveData(pref: SharedPreferences, word: String, meaning: String) {
         val editor = pref.edit()
         editor.putString(word, meaning)
             .apply()
@@ -206,7 +214,7 @@ class VocListActivity : AppCompatActivity() {
 
     fun addDialog() {
 
-        val mDialogView = LayoutInflater.from(this).inflate(R.layout.fragment_add, null)
+        val mDialogView = LayoutInflater.from(context).inflate(R.layout.fragment_add, null)
 
         var editWord = mDialogView.findViewById<EditText>(R.id.editWord)
         var editMeaning = mDialogView.findViewById<EditText>(R.id.editMeaning)
@@ -218,7 +226,7 @@ class VocListActivity : AppCompatActivity() {
         }
 
 
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(context!!)
             .setView(mDialogView)
             .setTitle("단어 추가하기")
             .setPositiveButton("추가") { _, _ ->
@@ -226,7 +234,7 @@ class VocListActivity : AppCompatActivity() {
                 var newMeaning = editMeaning.text.toString()
 
                 if (words.containsKey(newWord)) {
-                    delData(myPref,newWord)
+                    delData(myPref, newWord)
                     saveData(myPref, newWord, newMeaning)
                     ShowChocoBarOrange("\"" + newWord + "\" 단어가 수정되었습니다.")
                 } else {
@@ -246,7 +254,7 @@ class VocListActivity : AppCompatActivity() {
 
 
     fun ShowChocoBarGreen(message: String) {
-        ChocoBar.builder().setActivity(this)
+        ChocoBar.builder().setView(view)
             .setText(message)
             .setDuration(ChocoBar.LENGTH_SHORT)
             .green()
@@ -254,7 +262,7 @@ class VocListActivity : AppCompatActivity() {
     }
 
     fun ShowChocoBarOrange(message: String) {
-        ChocoBar.builder().setActivity(this)
+        ChocoBar.builder().setView(view)
             .setText(message)
             .setDuration(ChocoBar.LENGTH_SHORT)
             .orange()
@@ -286,5 +294,6 @@ class VocListActivity : AppCompatActivity() {
         makeList(array)
 
     }
+
 
 }
