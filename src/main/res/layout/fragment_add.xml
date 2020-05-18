@@ -38,13 +38,14 @@
 
                 <ImageView
                     android:id="@+id/clearEditWord"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/editWord"
-                    android:src="@drawable/cross_mark"
+                    android:src="@drawable/cross"
                     android:tint="#756F6F"
-                    android:clickable="true"/>
+                    android:clickable="true"
+                    />
             </RelativeLayout>
 
         </LinearLayout>
@@ -74,12 +75,12 @@
 
                 <ImageView
                     android:id="@+id/clearEditMeaning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/editMeaning"
                     android:clickable="true"
-                    android:src="@drawable/cross_mark"
+                    android:src="@drawable/cross"
                     android:tint="#756F6F" />
             </RelativeLayout>
         </LinearLayout>

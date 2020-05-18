@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.pd.chocobar.ChocoBar
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_voc_list.addFab
 import kotlinx.android.synthetic.main.activity_voc_list.meaningSwitch
 import kotlinx.android.synthetic.main.activity_voc_list.recyclerView
@@ -175,7 +175,7 @@ class VocListFragment : Fragment() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-//                adapter.moveItem(viewHolder.adapterPosition, target.adapterPosition)
+                adapter.moveItem(viewHolder.adapterPosition, target.adapterPosition)
                 return false
             }
 
@@ -183,7 +183,7 @@ class VocListFragment : Fragment() {
 
                 val delWord = adapter.removeItem(viewHolder.adapterPosition)
                 delData(myPref, delWord)
-                ShowChocoBarRed("\"" + delWord+ "\" 단어가 삭제되었습니다.")
+                Toasty.error(context!!, "\"" + delWord+ "\" 단어가 삭제되었습니다.", Toast.LENGTH_SHORT, true).show();
             }
 
         }
@@ -273,13 +273,14 @@ class VocListFragment : Fragment() {
                 var newWord = editWord.text.toString()
                 var newMeaning = editMeaning.text.toString()
 
+
                 if (words.containsKey(newWord)) {
                     delData(myPref, newWord)
                     saveData(myPref, newWord, newMeaning)
-                    ShowChocoBarOrange("\"" + newWord + "\" 단어가 수정되었습니다.")
+                    Toasty.warning(view!!.context.applicationContext, "\"" + newWord + "\" 단어가 수정되었습니다.", Toast.LENGTH_SHORT, true).show()
                 } else {
                     saveData(myPref, newWord, newMeaning)
-                    ShowChocoBarGreen("\"" + newWord + "\" 단어가 추가되었습니다.")
+                    Toasty.success(view!!.context.applicationContext, "\"" + newWord + "\" 단어가 추가되었습니다.", Toast.LENGTH_SHORT, true).show()
                 }
                 makeList(recyclerView, array)
 
@@ -291,33 +292,8 @@ class VocListFragment : Fragment() {
         val dig = builder.create()
         dig.setCanceledOnTouchOutside(false)
         dig.show()
+
     }
-
-
-    fun ShowChocoBarGreen(message: String) {
-        ChocoBar.builder().setView(view)
-            .setText(message)
-            .setDuration(ChocoBar.LENGTH_SHORT)
-            .green()
-            .show()
-    }
-
-    fun ShowChocoBarOrange(message: String) {
-        ChocoBar.builder().setView(view)
-            .setText(message)
-            .setDuration(ChocoBar.LENGTH_SHORT)
-            .orange()
-            .show()
-    }
-
-    fun ShowChocoBarRed(message: String) {
-        ChocoBar.builder().setView(view)
-            .setText(message)
-            .setDuration(ChocoBar.LENGTH_SHORT)
-            .red()
-            .show()
-    }
-
 
     fun sortArray() {
         var sortedArray: ArrayList<String> = ArrayList(array)

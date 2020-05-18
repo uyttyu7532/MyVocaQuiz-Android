@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_intro.*
 import java.io.PrintStream
 
@@ -43,7 +43,7 @@ class IntroActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.infoDeveloper->{
-                Toast.makeText(this,"스마트ict융합공학과 201714286 조예린", Toast.LENGTH_SHORT).show()
+                Toasty.normal(this, "스마트ict융합공학과 201714286 조예린").show();
             }
 
         }

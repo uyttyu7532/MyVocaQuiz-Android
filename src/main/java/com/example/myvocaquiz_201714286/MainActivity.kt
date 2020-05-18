@@ -23,7 +23,20 @@ class MainActivity : AppCompatActivity() {
             tab.text = tabArray[position]
             // tab.icon
         }.attach()
+
     }
+
+
+//    override fun onBackPressed(){
+//            if (webView.canGoBack()) { // 웹뷰가 이전 페이지로 갈 수 있다면
+//                webView.goBack()
+//            } else {
+//                super.onBackPressed()
+//            }
+//    }
+
+
+
 
 
 }

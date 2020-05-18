@@ -47,6 +47,7 @@ class OptionActivity : AppCompatActivity() {
             }
 
             startActivity(i)
+            finish()
 
         }
 

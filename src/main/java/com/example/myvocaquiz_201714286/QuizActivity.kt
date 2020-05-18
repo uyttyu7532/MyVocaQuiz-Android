@@ -1,11 +1,14 @@
 package com.example.myvocaquiz_201714286
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.speech.tts.TextToSpeech
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
@@ -37,14 +40,22 @@ class QuizActivity : AppCompatActivity() {
         init(0)
     }
 
+
+    override fun onPause() {
+        super.onPause()
+    }
+
     override fun onStop() {
         super.onStop()
         tts.stop()
+
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         tts.shutdown()
+
     }
 
     private fun init(pos: Int) {
@@ -110,6 +121,7 @@ class QuizActivity : AppCompatActivity() {
     }
 
 
+
 //    fun readFileScan(scan: Scanner){
 //        while(scan.hasNextLine()){
 //            val word = scan.nextLine()
@@ -171,5 +183,25 @@ class QuizActivity : AppCompatActivity() {
         tmpList.shuffle()
         adapter = QuizAdapter(tmpList, words[pos], choice_count)
     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.quizmenu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_home -> {
+                val i = Intent(this, FinishQuizActivity::class.java)
+                i.putExtra("totalquiz", totalquiz)
+                i.putExtra("score", score)
+                startActivity(i)
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
 }
