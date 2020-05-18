@@ -4,6 +4,7 @@ import VocListAdapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -48,13 +49,35 @@ class VocListFragment : Fragment() {
         adapter = VocListAdapter(array, words, switchOn)
         recyclerView.adapter = adapter
 
-        init()
+        init(recyclerView)
 
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+                // 전체보이기/숨기기
+        meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                switchOn = true
+                makeList(recyclerView,array)
+            } else {
+                switchOn = false
+                makeList(recyclerView,array)
+            }
+        }
+
+                sortByABC.setOnClickListener {
+            sortByABC.setTextColor(Color.BLACK)
+            sortByRecent.setTextColor(Color.GRAY)
+            sortArray()
+        }
+        sortByRecent.setOnClickListener {
+            sortByRecent.setTextColor(Color.BLACK)
+            sortByABC.setTextColor(Color.GRAY)
+            makeList(recyclerView,array)
+        }
     }
 
     override fun onStop() {
@@ -89,7 +112,7 @@ class VocListFragment : Fragment() {
 //    }
 
     @SuppressLint("WrongConstant")
-    private fun init() {
+    private fun init(recyclerView:RecyclerView) {
 
         basicPref = context!!.getSharedPreferences("basicPref", Context.MODE_PRIVATE)
         myPref = context!!.getSharedPreferences("myPref", Context.MODE_PRIVATE)
@@ -100,19 +123,9 @@ class VocListFragment : Fragment() {
         })
 
         loadAllData(myPref)
-        makeList(array)
+        readBasicFile(recyclerView)
+        makeList(recyclerView, array)
 
-
-//        // 전체보이기/숨기기
-//        meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-//            if (isChecked) {
-//                switchOn = true
-//                makeList(array)
-//            } else {
-//                switchOn = false
-//                makeList(array)
-//            }
-//        }
 
 
         val simpleCallback = object : ItemTouchHelper.SimpleCallback(
@@ -139,25 +152,12 @@ class VocListFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
-
-//        sortByABC.setOnClickListener {
-//            sortByABC.setTextColor(Color.BLACK)
-//            sortByRecent.setTextColor(Color.GRAY)
-//            sortArray()
-//        }
-//        sortByRecent.setOnClickListener {
-//            sortByRecent.setTextColor(Color.BLACK)
-//            sortByABC.setTextColor(Color.GRAY)
-//            makeList(array)
-//        }
-
-
     }
 
 
-    private fun makeList(array: ArrayList<String>) {
-//        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//        adapter = VocListAdapter(array, words, switchOn)
+    private fun makeList(recyclerView: RecyclerView, array: ArrayList<String>) {
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter = VocListAdapter(array, words, switchOn)
         adapter.itemClickListener = object : VocListAdapter.onItemClickListener {
             override fun onItemClick(
                 holder: VocListAdapter.MyViewHolder,
@@ -177,7 +177,7 @@ class VocListFragment : Fragment() {
                 }
             }
         }
-//        recyclerView.adapter = adapter
+        recyclerView.adapter = adapter
     }
 
     private fun saveData(pref: SharedPreferences, word: String, meaning: String) {
@@ -241,7 +241,7 @@ class VocListFragment : Fragment() {
                     saveData(myPref, newWord, newMeaning)
                     ShowChocoBarGreen("\"" + newWord + "\" 단어가 추가되었습니다.")
                 }
-                makeList(array)
+                makeList(recyclerView,array)
             }
         builder.setNegativeButton("취소") { _, _ ->
         }
@@ -273,7 +273,7 @@ class VocListFragment : Fragment() {
     fun sortArray() {
         var sortedArray: ArrayList<String> = ArrayList(array)
         Collections.sort(sortedArray)
-        makeList(sortedArray)
+        makeList(recyclerView,sortedArray)
     }
 
 
@@ -287,11 +287,11 @@ class VocListFragment : Fragment() {
     }
 
     // 기본 단어장을 sharedpreference에 저장하기
-    fun readBasicFile() {
+    fun readBasicFile(recyclerView: RecyclerView) {
         val scan = Scanner(resources.openRawResource(R.raw.words))
         readBasicFileScan(scan)
 
-        makeList(array)
+        makeList(recyclerView,array)
 
     }
 
