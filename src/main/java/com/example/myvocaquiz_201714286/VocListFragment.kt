@@ -15,14 +15,22 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pd.chocobar.ChocoBar
-import kotlinx.android.synthetic.main.activity_voc_list.*
+import kotlinx.android.synthetic.main.activity_voc_list.addFab
+import kotlinx.android.synthetic.main.activity_voc_list.meaningSwitch
+import kotlinx.android.synthetic.main.activity_voc_list.recyclerView
+import kotlinx.android.synthetic.main.activity_voc_list.sortByABC
+import kotlinx.android.synthetic.main.activity_voc_list.sortByRecent
 import kotlinx.android.synthetic.main.fragment_add.*
+import kotlinx.android.synthetic.main.fragment_voc_list.*
+import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,6 +43,7 @@ class VocListFragment : Fragment() {
     lateinit var tts: TextToSpeech
     var isTtsReady = false
     var switchOn = false
+
 
     lateinit var basicPref: SharedPreferences
     lateinit var myPref: SharedPreferences
@@ -49,6 +58,11 @@ class VocListFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_voc_list, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+
+        val fastScroller = view.findViewById(R.id.fast_scroller) as VerticalRecyclerViewFastScroller
+        fastScroller.setRecyclerView(recyclerView)
+        recyclerView.addOnScrollListener(fastScroller.getOnScrollListener())
+
         val addView = inflater.inflate(R.layout.fragment_add, container, false)
 
         clearEditWord = addView.findViewById(R.id.clearEditWord) as ImageView
@@ -59,10 +73,6 @@ class VocListFragment : Fragment() {
         adapter = VocListAdapter(array, words, switchOn)
         recyclerView.adapter = adapter
 
-        Log.d("성공", "실행성공")
-
-
-
 
         init(recyclerView)
 
@@ -71,6 +81,7 @@ class VocListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
 
         clearEditWord.setOnClickListener {
             Log.d("성공", "클릭성공1")
@@ -84,6 +95,7 @@ class VocListFragment : Fragment() {
             editMeaning.text = null
             editMeaning.setText("")
         }
+
         // 전체보이기/숨기기
         meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -96,7 +108,6 @@ class VocListFragment : Fragment() {
         }
 
         sortByABC.setOnClickListener {
-            Log.d("클릭", "클릭성공")
             sortByABC.setTextColor(Color.BLACK)
             sortByRecent.setTextColor(Color.GRAY)
             sortArray()
@@ -110,6 +121,18 @@ class VocListFragment : Fragment() {
         addFab.setOnClickListener {
             addDialog()
         }
+
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+            }
+        })
 
 
     }
@@ -138,6 +161,7 @@ class VocListFragment : Fragment() {
         })
 
         loadAllData(myPref)
+//        basicPref.edit().clear().apply()
 //        readBasicFile(recyclerView)
         makeList(recyclerView, array)
 
@@ -159,6 +183,7 @@ class VocListFragment : Fragment() {
 
                 val delWord = adapter.removeItem(viewHolder.adapterPosition)
                 delData(myPref, delWord)
+                ShowChocoBarRed("\"" + delWord+ "\" 단어가 삭제되었습니다.")
             }
 
         }
@@ -174,6 +199,7 @@ class VocListFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = VocListAdapter(array, words, switchOn)
         adapter.itemClickListener = object : VocListAdapter.onItemClickListener {
+            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun onItemClick(
                 holder: VocListAdapter.MyViewHolder,
                 view: View,
@@ -256,6 +282,7 @@ class VocListFragment : Fragment() {
                     ShowChocoBarGreen("\"" + newWord + "\" 단어가 추가되었습니다.")
                 }
                 makeList(recyclerView, array)
+
             }
         builder.setNegativeButton("취소") { _, _ ->
         }
@@ -280,6 +307,14 @@ class VocListFragment : Fragment() {
             .setText(message)
             .setDuration(ChocoBar.LENGTH_SHORT)
             .orange()
+            .show()
+    }
+
+    fun ShowChocoBarRed(message: String) {
+        ChocoBar.builder().setView(view)
+            .setText(message)
+            .setDuration(ChocoBar.LENGTH_SHORT)
+            .red()
             .show()
     }
 
@@ -308,6 +343,8 @@ class VocListFragment : Fragment() {
         makeList(recyclerView, array)
 
     }
+
+
 
 
 }

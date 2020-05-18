@@ -11,22 +11,10 @@
         android:layout_height="match_parent">
 
 
-<!--        <TextView-->
-<!--            android:id="@+id/title"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="#D5DFE4"-->
-<!--            android:gravity="center"-->
-<!--            android:padding="25dp"-->
-<!--            android:text="영어단어장"-->
-<!--            android:textSize="15sp"-->
-<!--            android:textStyle="bold" />-->
-
         <TextView
             android:id="@+id/sortByRecent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/recyclerView"
             android:layout_below="@+id/title"
             android:layout_alignParentStart="true"
             android:layout_margin="5dp"
@@ -38,7 +26,6 @@
             android:id="@+id/sortByABC"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/recyclerView"
             android:layout_below="@+id/title"
             android:layout_margin="5dp"
             android:layout_toRightOf="@+id/sortByRecent"
@@ -52,14 +39,28 @@
             android:layout_below="@+id/title"
             android:layout_alignParentRight="true" />
 
+
+        <SearchView
+            android:layout_below="@+id/meaningSwitch"
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/meaningSwitch"
-            android:scrollbars="vertical">
+            android:layout_below="@+id/searchView"/>
 
-        </androidx.recyclerview.widget.RecyclerView>
+        <xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller
+            android:id="@+id/fast_scroller"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/searchView"
+            />
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

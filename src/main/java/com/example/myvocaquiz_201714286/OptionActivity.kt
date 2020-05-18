@@ -25,6 +25,7 @@ class OptionActivity : AppCompatActivity() {
         choice_quiz_spinner.adapter = adapter2
 
 
+
         startBtn.setOnClickListener {
             val i = Intent(this, QuizActivity::class.java)
 

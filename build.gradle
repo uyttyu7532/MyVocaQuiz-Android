@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.4.0'
 
     implementation 'com.github.Pradyuman7:ChocoBar:V1.2'
+    implementation 'xyz.danoz:recyclerviewfastscroller:0.1.3'
 
 
 }
