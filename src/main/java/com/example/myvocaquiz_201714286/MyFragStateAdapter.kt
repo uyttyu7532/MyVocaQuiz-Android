@@ -13,7 +13,7 @@ class MyFragStateAdapter(fragmentActivity: FragmentActivity) :
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0-> VocListFragment()
-            else-> VocListFragment()
+            else-> WebFragment()
         }
     }
 }

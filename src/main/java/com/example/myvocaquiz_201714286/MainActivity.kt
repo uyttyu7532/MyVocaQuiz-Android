@@ -1,13 +1,15 @@
 package com.example.myvocaquiz_201714286
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val tabArray = arrayListOf<String>("기본단어장","내 단어장")
+    val tabArray = arrayListOf<String>("단어장","단어 검색")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +25,12 @@ class MainActivity : AppCompatActivity() {
             // tab.icon
         }.attach()
 
-//        addFab.setOnClickListener {
-//            addDialog()
-//        }
     }
 
-
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
 
 
 }

@@ -35,7 +35,6 @@ class VocListFragment : Fragment() {
     lateinit var basicPref: SharedPreferences
     lateinit var myPref: SharedPreferences
 
-    private var columnCount = 10
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +44,8 @@ class VocListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_voc_list, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = VocListAdapter(array, words, switchOn)
         recyclerView.adapter = adapter
 
@@ -57,18 +57,18 @@ class VocListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-                // 전체보이기/숨기기
+        // 전체보이기/숨기기
         meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 switchOn = true
-                makeList(recyclerView,array)
+                makeList(recyclerView, array)
             } else {
                 switchOn = false
-                makeList(recyclerView,array)
+                makeList(recyclerView, array)
             }
         }
 
-                sortByABC.setOnClickListener {
+        sortByABC.setOnClickListener {
             sortByABC.setTextColor(Color.BLACK)
             sortByRecent.setTextColor(Color.GRAY)
             sortArray()
@@ -76,8 +76,13 @@ class VocListFragment : Fragment() {
         sortByRecent.setOnClickListener {
             sortByRecent.setTextColor(Color.BLACK)
             sortByABC.setTextColor(Color.GRAY)
-            makeList(recyclerView,array)
+            makeList(recyclerView, array)
         }
+
+        addFab.setOnClickListener {
+            addDialog()
+        }
+
     }
 
     override fun onStop() {
@@ -112,7 +117,7 @@ class VocListFragment : Fragment() {
 //    }
 
     @SuppressLint("WrongConstant")
-    private fun init(recyclerView:RecyclerView) {
+    private fun init(recyclerView: RecyclerView) {
 
         basicPref = context!!.getSharedPreferences("basicPref", Context.MODE_PRIVATE)
         myPref = context!!.getSharedPreferences("myPref", Context.MODE_PRIVATE)
@@ -123,9 +128,8 @@ class VocListFragment : Fragment() {
         })
 
         loadAllData(myPref)
-        readBasicFile(recyclerView)
+//        readBasicFile(recyclerView)
         makeList(recyclerView, array)
-
 
 
         val simpleCallback = object : ItemTouchHelper.SimpleCallback(
@@ -156,7 +160,8 @@ class VocListFragment : Fragment() {
 
 
     private fun makeList(recyclerView: RecyclerView, array: ArrayList<String>) {
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = VocListAdapter(array, words, switchOn)
         adapter.itemClickListener = object : VocListAdapter.onItemClickListener {
             override fun onItemClick(
@@ -213,7 +218,6 @@ class VocListFragment : Fragment() {
 
 
     fun addDialog() {
-
         val mDialogView = LayoutInflater.from(context).inflate(R.layout.fragment_add, null)
 
         var editWord = mDialogView.findViewById<EditText>(R.id.editWord)
@@ -241,7 +245,7 @@ class VocListFragment : Fragment() {
                     saveData(myPref, newWord, newMeaning)
                     ShowChocoBarGreen("\"" + newWord + "\" 단어가 추가되었습니다.")
                 }
-                makeList(recyclerView,array)
+                makeList(recyclerView, array)
             }
         builder.setNegativeButton("취소") { _, _ ->
         }
@@ -273,7 +277,7 @@ class VocListFragment : Fragment() {
     fun sortArray() {
         var sortedArray: ArrayList<String> = ArrayList(array)
         Collections.sort(sortedArray)
-        makeList(recyclerView,sortedArray)
+        makeList(recyclerView, sortedArray)
     }
 
 
@@ -291,7 +295,7 @@ class VocListFragment : Fragment() {
         val scan = Scanner(resources.openRawResource(R.raw.words))
         readBasicFileScan(scan)
 
-        makeList(recyclerView,array)
+        makeList(recyclerView, array)
 
     }
 
