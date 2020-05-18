@@ -23,12 +23,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.activity_voc_list.addFab
-import kotlinx.android.synthetic.main.activity_voc_list.meaningSwitch
-import kotlinx.android.synthetic.main.activity_voc_list.recyclerView
-import kotlinx.android.synthetic.main.activity_voc_list.sortByABC
-import kotlinx.android.synthetic.main.activity_voc_list.sortByRecent
-import kotlinx.android.synthetic.main.fragment_add.*
 import kotlinx.android.synthetic.main.fragment_voc_list.*
 import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller
 import java.util.*
@@ -63,10 +57,6 @@ class VocListFragment : Fragment() {
         fastScroller.setRecyclerView(recyclerView)
         recyclerView.addOnScrollListener(fastScroller.getOnScrollListener())
 
-        val addView = inflater.inflate(R.layout.fragment_add, container, false)
-
-        clearEditWord = addView.findViewById(R.id.clearEditWord) as ImageView
-        clearEditMeaning = addView.findViewById(R.id.clearEditMeaning) as ImageView
 
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -82,19 +72,6 @@ class VocListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
-        clearEditWord.setOnClickListener {
-            Log.d("성공", "클릭성공1")
-            editWord.text = null
-            editWord.setText("")
-            Toast.makeText(context, "성공", Toast.LENGTH_SHORT).show()
-        }
-
-        clearEditMeaning.setOnClickListener {
-            Log.d("성공", "클릭성공2")
-            editMeaning.text = null
-            editMeaning.setText("")
-        }
 
         // 전체보이기/숨기기
         meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -122,7 +99,7 @@ class VocListFragment : Fragment() {
             addDialog()
         }
 
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -167,7 +144,7 @@ class VocListFragment : Fragment() {
 
 
         val simpleCallback = object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.DOWN or ItemTouchHelper.UP,
+            ItemTouchHelper.UP and ItemTouchHelper.ACTION_STATE_IDLE,
             ItemTouchHelper.RIGHT
         ) {
             override fun onMove(
@@ -183,7 +160,12 @@ class VocListFragment : Fragment() {
 
                 val delWord = adapter.removeItem(viewHolder.adapterPosition)
                 delData(myPref, delWord)
-                Toasty.error(context!!, "\"" + delWord+ "\" 단어가 삭제되었습니다.", Toast.LENGTH_SHORT, true).show();
+                Toasty.error(
+                    context!!,
+                    "\"" + delWord + "\" 단어가 삭제되었습니다.",
+                    Toast.LENGTH_SHORT,
+                    true
+                ).show();
             }
 
         }
@@ -219,6 +201,16 @@ class VocListFragment : Fragment() {
             }
         }
         recyclerView.adapter = adapter
+
+        try {
+            if (searchView.query != null) {
+                adapter.filter.filter(searchView.query.toString())
+            }
+        } catch (_: Exception) {
+
+        }
+
+
     }
 
     private fun saveData(pref: SharedPreferences, word: String, meaning: String) {
@@ -259,12 +251,26 @@ class VocListFragment : Fragment() {
         var editWord = mDialogView.findViewById<EditText>(R.id.editWord)
         var editMeaning = mDialogView.findViewById<EditText>(R.id.editMeaning)
 
+        var clearEditWord = mDialogView.findViewById<ImageView>(R.id.clearEditWord)
+        var clearEditMeaning = mDialogView.findViewById<ImageView>(R.id.clearEditMeaning)
+
         editWord.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
                 editMeaning?.setText(words[editWord.text.toString()])
             }
         }
 
+
+        clearEditWord.setOnClickListener {
+            Log.d("성공", "클릭성공1")
+            editWord.setText("")
+            Toast.makeText(context, "성공", Toast.LENGTH_SHORT).show()
+        }
+
+        clearEditMeaning.setOnClickListener {
+            Log.d("성공", "클릭성공2")
+            editMeaning.setText("")
+        }
 
         val builder = AlertDialog.Builder(context!!)
             .setView(mDialogView)
@@ -277,10 +283,20 @@ class VocListFragment : Fragment() {
                 if (words.containsKey(newWord)) {
                     delData(myPref, newWord)
                     saveData(myPref, newWord, newMeaning)
-                    Toasty.warning(view!!.context.applicationContext, "\"" + newWord + "\" 단어가 수정되었습니다.", Toast.LENGTH_SHORT, true).show()
+                    Toasty.warning(
+                        view!!.context.applicationContext,
+                        "\"" + newWord + "\" 단어가 수정되었습니다.",
+                        Toast.LENGTH_SHORT,
+                        true
+                    ).show()
                 } else {
                     saveData(myPref, newWord, newMeaning)
-                    Toasty.success(view!!.context.applicationContext, "\"" + newWord + "\" 단어가 추가되었습니다.", Toast.LENGTH_SHORT, true).show()
+                    Toasty.success(
+                        view!!.context.applicationContext,
+                        "\"" + newWord + "\" 단어가 추가되었습니다.",
+                        Toast.LENGTH_SHORT,
+                        true
+                    ).show()
                 }
                 makeList(recyclerView, array)
 
@@ -319,8 +335,6 @@ class VocListFragment : Fragment() {
         makeList(recyclerView, array)
 
     }
-
-
 
 
 }

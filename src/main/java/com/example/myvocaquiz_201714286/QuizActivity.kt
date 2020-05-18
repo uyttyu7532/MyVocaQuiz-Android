@@ -43,6 +43,11 @@ class QuizActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        val i = Intent(this, FinishQuizActivity::class.java)
+        i.putExtra("totalquiz", totalquiz)
+        i.putExtra("score", score)
+        startActivity(i)
+        finish()
     }
 
     override fun onStop() {
@@ -121,7 +126,6 @@ class QuizActivity : AppCompatActivity() {
     }
 
 
-
 //    fun readFileScan(scan: Scanner){
 //        while(scan.hasNextLine()){
 //            val word = scan.nextLine()
@@ -193,10 +197,6 @@ class QuizActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_home -> {
-                val i = Intent(this, FinishQuizActivity::class.java)
-                i.putExtra("totalquiz", totalquiz)
-                i.putExtra("score", score)
-                startActivity(i)
                 finish()
             }
         }

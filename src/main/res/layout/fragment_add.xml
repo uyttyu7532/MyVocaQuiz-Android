@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".AddFragment"
-    android:layout_gravity="center">
+    tools:context=".AddFragment">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="30dp">
+        android:layout_margin="30dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -18,12 +18,12 @@
             android:orientation="horizontal">
 
             <TextView
+                android:layout_marginLeft="10dp"
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:ems="2"
-                android:text="단어"
-                android:clickable="true"/>
+                android:clickable="true"
+                android:text="단어" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -31,21 +31,24 @@
 
                 <EditText
                     android:id="@+id/editWord"
-                    android:layout_width="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:layout_toLeftOf="@id/clearEditWord"
                     android:inputType="text" />
 
                 <ImageView
                     android:id="@+id/clearEditWord"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/editWord"
-                    android:src="@drawable/cross"
-                    android:tint="#756F6F"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:clickable="true"
-                    />
+                    android:tint="#756F6F"
+                    app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -56,10 +59,10 @@
             android:orientation="horizontal">
 
             <TextView
+                android:layout_marginLeft="10dp"
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:ems="2"
                 android:text="뜻" />
 
             <RelativeLayout
@@ -67,21 +70,29 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentLeft="true"
                     android:id="@+id/editMeaning"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:layout_toLeftOf="@+id/clearEditMeaning"
                     android:inputType="text" />
 
                 <ImageView
                     android:id="@+id/clearEditMeaning"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/editMeaning"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
                     android:clickable="true"
-                    android:src="@drawable/cross"
-                    android:tint="#756F6F" />
+                    android:tint="#756F6F"
+                    app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
