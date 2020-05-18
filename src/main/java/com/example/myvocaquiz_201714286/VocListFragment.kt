@@ -8,10 +8,13 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pd.chocobar.ChocoBar
 import kotlinx.android.synthetic.main.activity_voc_list.*
+import kotlinx.android.synthetic.main.fragment_add.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,6 +39,8 @@ class VocListFragment : Fragment() {
     lateinit var basicPref: SharedPreferences
     lateinit var myPref: SharedPreferences
 
+    lateinit var clearEditWord: ImageView
+    lateinit var clearEditMeaning: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +49,20 @@ class VocListFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_voc_list, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        val addView = inflater.inflate(R.layout.fragment_add, container, false)
+
+        clearEditWord = addView.findViewById(R.id.clearEditWord) as ImageView
+        clearEditMeaning = addView.findViewById(R.id.clearEditMeaning) as ImageView
 
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = VocListAdapter(array, words, switchOn)
         recyclerView.adapter = adapter
+
+        Log.d("성공", "실행성공")
+
+
+
 
         init(recyclerView)
 
@@ -57,6 +72,18 @@ class VocListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        clearEditWord.setOnClickListener {
+            Log.d("성공", "클릭성공1")
+            editWord.text = null
+            editWord.setText("")
+            Toast.makeText(context, "성공", Toast.LENGTH_SHORT).show()
+        }
+
+        clearEditMeaning.setOnClickListener {
+            Log.d("성공", "클릭성공2")
+            editMeaning.text = null
+            editMeaning.setText("")
+        }
         // 전체보이기/숨기기
         meaningSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -69,6 +96,7 @@ class VocListFragment : Fragment() {
         }
 
         sortByABC.setOnClickListener {
+            Log.d("클릭", "클릭성공")
             sortByABC.setTextColor(Color.BLACK)
             sortByRecent.setTextColor(Color.GRAY)
             sortArray()
@@ -83,7 +111,9 @@ class VocListFragment : Fragment() {
             addDialog()
         }
 
+
     }
+
 
     override fun onStop() {
         super.onStop()
@@ -95,26 +125,6 @@ class VocListFragment : Fragment() {
         tts.shutdown()
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.basicWordMenu -> {
-//                readBasicFile()
-//            }
-//
-//            R.id.delBasicWordMenu -> {
-//                basicPref.edit().clear().apply()
-//                makeList(array)
-//            }
-//
-//
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 
     @SuppressLint("WrongConstant")
     private fun init(recyclerView: RecyclerView) {
@@ -142,7 +152,7 @@ class VocListFragment : Fragment() {
                 target: RecyclerView.ViewHolder
             ): Boolean {
 //                adapter.moveItem(viewHolder.adapterPosition, target.adapterPosition)
-                return true
+                return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

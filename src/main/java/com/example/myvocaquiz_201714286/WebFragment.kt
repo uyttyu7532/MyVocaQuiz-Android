@@ -29,6 +29,14 @@ class WebFragment : Fragment() {
 
     return view
 }
+
+//    override fun onBackPressed(){
+//        if(webView.canGoBack()){ // 웹뷰가 이전 페이지로 갈 수 있다면
+//            webView.goBack()
+//        } else {
+//            super.onBackPressed()
+//        }
+//    }
 //
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        super.onActivityCreated(savedInstanceState)

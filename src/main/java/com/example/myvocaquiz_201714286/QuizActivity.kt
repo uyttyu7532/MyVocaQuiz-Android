@@ -1,10 +1,10 @@
 package com.example.myvocaquiz_201714286
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.preference.PreferenceManager
 import android.speech.tts.TextToSpeech
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -23,13 +23,17 @@ class QuizActivity : AppCompatActivity() {
     lateinit var tts: TextToSpeech
     var isTtsReady = false
 
+    lateinit var myPref: SharedPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
 //        readFile()
-        loadAllData()
+
+        myPref = this.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        loadAllData(myPref)
         init(0)
     }
 
@@ -59,9 +63,6 @@ class QuizActivity : AppCompatActivity() {
             quiz_english(pos, choice_count)
         else
             quiz_korean(pos, choice_count)
-
-
-
 
 
         RecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -130,8 +131,7 @@ class QuizActivity : AppCompatActivity() {
 //        words.shuffle()
 //    }
 
-    private fun loadAllData() {
-        val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+    private fun loadAllData(pref: SharedPreferences) {
         val prefKeys: MutableSet<String> = pref.all.keys
         for (pref_key in prefKeys) {
             var tmp = Data(pref_key, pref.getString(pref_key, "null"))
