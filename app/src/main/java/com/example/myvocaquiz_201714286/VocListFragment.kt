@@ -190,7 +190,7 @@ class VocListFragment : Fragment() {
             ) {
                 if (isTtsReady) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        tts.speak(data, TextToSpeech.QUEUE_ADD, null, null)
+                        tts.speak(data, TextToSpeech.QUEUE_FLUSH, null, null)
                     }
                 }
                 if (holder.meaningView.visibility == View.GONE) {
