@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 // RecyclerView에 표시될 View 생성
-class QuizAdapter(val choice_data:ArrayList<String>, val correct:Data, val choice_count:Int): RecyclerView.Adapter<QuizAdapter.MyViewHolder>() {
+class QuizAdapter(val data:ArrayList<String>, val correct:Data, val choice_count:Int, val choice_quiz:Int): RecyclerView.Adapter<QuizAdapter.MyViewHolder>() {
 
     interface onItemClickListener{
-       fun onItemClick( holder:MyViewHolder, view: View, data:String, position: Int)
+        fun onItemClick( holder:MyViewHolder, view: View, data:String, position: Int)
     }
 
     var itemClickListener:onItemClickListener?=null
@@ -28,19 +28,36 @@ class QuizAdapter(val choice_data:ArrayList<String>, val correct:Data, val choic
 
     // 뷰홀더에 해당하는 것이 전달됨.(내용만 교체할때 호출됨)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            holder.textView.text=choice_data[position]
+        if(choice_quiz == 0)
+            holder.textView.text=data[position]
+        else
+            holder.textView.text=data[position]
+
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var textView:TextView = itemView.findViewById(R.id.textView)
         init{
             itemView.setOnClickListener {
-                if(choice_data[adapterPosition] == correct.meaning){
-                    itemClickListener?.onItemClick(this, it, "true", adapterPosition)
+                if(choice_quiz == 0){ // 영어문제 한글보기
+                    if(data[adapterPosition] == correct.meaning){
+                        itemClickListener?.onItemClick(this, it, "true", adapterPosition)
+                    }
+                    else{
+                        itemClickListener?.onItemClick(this, it, "false",adapterPosition)
+                    }
                 }
-                else{
-                    itemClickListener?.onItemClick(this, it, "false",adapterPosition)
+
+
+                else{ // 한글문제 영어보기
+                    if(data[adapterPosition]== correct.word){
+                        itemClickListener?.onItemClick(this, it, "true", adapterPosition)
+                    }
+                    else{
+                        itemClickListener?.onItemClick(this, it, "false",adapterPosition)
+                    }
                 }
+
 
 
             }

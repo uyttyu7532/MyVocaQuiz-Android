@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,8 +41,6 @@ class VocListFragment : Fragment() {
     lateinit var basicPref: SharedPreferences
     lateinit var myPref: SharedPreferences
 
-    lateinit var clearEditWord: ImageView
-    lateinit var clearEditMeaning: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -262,13 +259,10 @@ class VocListFragment : Fragment() {
 
 
         clearEditWord.setOnClickListener {
-            Log.d("성공", "클릭성공1")
             editWord.setText("")
-            Toast.makeText(context, "성공", Toast.LENGTH_SHORT).show()
         }
 
         clearEditMeaning.setOnClickListener {
-            Log.d("성공", "클릭성공2")
             editMeaning.setText("")
         }
 

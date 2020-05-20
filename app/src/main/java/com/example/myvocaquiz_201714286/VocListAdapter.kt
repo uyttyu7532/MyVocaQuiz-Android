@@ -23,14 +23,13 @@ class VocListAdapter(
 
     interface onItemClickListener {
         fun onItemClick(holder: MyViewHolder, view: View, data: String, position: Int)
-
     }
 
     var itemsFilterList = ArrayList<String>()
     var itemClickListener: onItemClickListener? = null
 
 
-    init{
+    init {
         itemsFilterList = items
     }
 
@@ -58,7 +57,6 @@ class VocListAdapter(
 
 
     }
-
 
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -118,7 +116,7 @@ class VocListAdapter(
         notifyItemMoved(oldPos, newPos)
     }
 
-    fun removeItem(pos: Int) : String{
+    fun removeItem(pos: Int): String {
         notifyItemRemoved(pos)
         return items.removeAt(pos)
     }
