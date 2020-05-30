@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.speech.tts.TextToSpeech
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_quiz.*
 import java.util.*
 import kotlin.collections.ArrayList
-
-
-
 
 class QuizActivity : AppCompatActivity() {
     var words = ArrayList<Data>()
@@ -73,10 +72,6 @@ class QuizActivity : AppCompatActivity() {
         else
             quiz_korean(pos, choice_count,choice_quiz)
 
-
-
-
-
         RecyclerView.layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         RecyclerView.adapter = adapter
 
@@ -118,8 +113,6 @@ class QuizActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun loadAllData(pref: SharedPreferences) {
         val prefKeys: MutableSet<String> = pref.all.keys
         for (pref_key in prefKeys) {
@@ -158,6 +151,20 @@ class QuizActivity : AppCompatActivity() {
         }
         tmpList.shuffle()
         adapter = QuizAdapter(tmpList,words[pos],choice_count,choice_quiz)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.quizmenu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_home -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

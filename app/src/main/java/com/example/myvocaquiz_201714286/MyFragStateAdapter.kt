@@ -10,8 +10,6 @@ class MyFragStateAdapter(fragmentActivity: FragmentActivity) :
         return 2
     }
 
-
-
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0-> VocListFragment()

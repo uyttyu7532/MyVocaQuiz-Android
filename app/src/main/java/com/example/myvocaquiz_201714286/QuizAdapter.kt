@@ -32,7 +32,6 @@ class QuizAdapter(val data:ArrayList<String>, val correct:Data, val choice_count
             holder.textView.text=data[position]
         else
             holder.textView.text=data[position]
-
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -57,8 +56,6 @@ class QuizAdapter(val data:ArrayList<String>, val correct:Data, val choice_count
                         itemClickListener?.onItemClick(this, it, "false",adapterPosition)
                     }
                 }
-
-
 
             }
         }

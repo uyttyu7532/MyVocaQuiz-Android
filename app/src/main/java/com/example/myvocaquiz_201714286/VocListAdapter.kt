@@ -1,3 +1,5 @@
+
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -27,6 +29,7 @@ class VocListAdapter(
 
     var itemsFilterList = ArrayList<String>()
     var itemClickListener: onItemClickListener? = null
+    private val mSelectedItems = SparseBooleanArray(0)
 
 
     init {
@@ -48,20 +51,22 @@ class VocListAdapter(
 
     // 뷰홀더에 해당하는 것이 전달됨.(내용만 교체할때 호출됨)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-//        holder.textView.text = items[position]
-//        holder.meaningView.text = words.getValue(items[position])
-
 
         holder.textView.text = itemsFilterList[position]
         holder.meaningView.text = words.getValue(itemsFilterList[position])
 
+        if (mSelectedItems.get(position, false)) {
+            holder.meaningView.visibility =VISIBLE
+        } else {
+            holder.meaningView.visibility = GONE
+        }
 
     }
 
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var textView: TextView = itemView.findViewById(R.id.textView)
-        var meaningView: TextView = itemView.findViewById(R.id.meaningView)
+        val textView: TextView = itemView.findViewById(R.id.textView)
+        val meaningView: TextView = itemView.findViewById(R.id.meaningView)
 
 
         init {
@@ -74,8 +79,16 @@ class VocListAdapter(
             }
 
             itemView.setOnClickListener {
+                if (mSelectedItems.get(adapterPosition, false)) {
+                    mSelectedItems.put(adapterPosition, false)
+                }
+                else{
+                    mSelectedItems.put(adapterPosition, true)
+                }
                 itemClickListener?.onItemClick(this, it, items[adapterPosition], adapterPosition)
             }
+
+
 
         }
     }

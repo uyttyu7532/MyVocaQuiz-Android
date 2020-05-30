@@ -38,7 +38,7 @@ class VocListFragment : Fragment() {
     var switchOn = false
 
 
-    lateinit var basicPref: SharedPreferences
+//    lateinit var basicPref: SharedPreferences
     lateinit var myPref: SharedPreferences
 
 
@@ -111,7 +111,6 @@ class VocListFragment : Fragment() {
 
     }
 
-
     override fun onStop() {
         super.onStop()
         tts.stop()
@@ -122,11 +121,10 @@ class VocListFragment : Fragment() {
         tts.shutdown()
     }
 
-
     @SuppressLint("WrongConstant")
     private fun init(recyclerView: RecyclerView) {
 
-        basicPref = context!!.getSharedPreferences("basicPref", Context.MODE_PRIVATE)
+//        basicPref = context!!.getSharedPreferences("basicPref", Context.MODE_PRIVATE)
         myPref = context!!.getSharedPreferences("myPref", Context.MODE_PRIVATE)
 
         tts = TextToSpeech(context, TextToSpeech.OnInitListener {
@@ -312,23 +310,23 @@ class VocListFragment : Fragment() {
     }
 
 
-    fun readBasicFileScan(scan: Scanner) {
-        while (scan.hasNextLine()) {
-            val word = scan.nextLine()
-            val meaning = scan.nextLine()
+//    fun readBasicFileScan(scan: Scanner) {
+//        while (scan.hasNextLine()) {
+//            val word = scan.nextLine()
+//            val meaning = scan.nextLine()
+//
+//            saveData(basicPref, word, meaning)
+//        }
+//    }
 
-            saveData(basicPref, word, meaning)
-        }
-    }
-
-    // 기본 단어장을 sharedpreference에 저장하기
-    fun readBasicFile(recyclerView: RecyclerView) {
-        val scan = Scanner(resources.openRawResource(R.raw.words))
-        readBasicFileScan(scan)
-
-        makeList(recyclerView, array)
-
-    }
+//    // 기본 단어장을 sharedpreference에 저장하기
+//    fun readBasicFile(recyclerView: RecyclerView) {
+//        val scan = Scanner(resources.openRawResource(R.raw.words))
+//        readBasicFileScan(scan)
+//
+//        makeList(recyclerView, array)
+//
+//    }
 
 
 }
